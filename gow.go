@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-import "github.com/peterhp/gow/util"
+	"github.com/peterhp/gow/geo"
+)
 
 func main() {
-	fmt.Printf("Hello, GO!\n")
+	fmt.Println("Welcome to GoLang world!")
 
-	fmt.Printf("%d + %d = %d\n", 1, 2, math.IntAdd(1, 2))
+	fmt.Println(geo.NewGeometry(geo.RECTANGLE, 4.0, 3.0).Area())
 }

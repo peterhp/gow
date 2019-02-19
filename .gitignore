@@ -17,3 +17,9 @@
 
 # Generated executable files
 gow
+
+# For self-exercise
+dojo/
+*.png
+
+.DS_Store

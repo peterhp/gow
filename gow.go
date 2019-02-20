@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/peterhp/gow/img"
+	"github.com/peterhp/gow/routine"
 )
 
 func generateImage(opName string) {
@@ -17,5 +18,5 @@ func generateImage(opName string) {
 func main() {
 	fmt.Println("Welcome to GoLang world!")
 
-	generateImage("square_add")
+	routine.SerialPrint(30, 3)
 }

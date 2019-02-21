@@ -21,17 +21,19 @@ func newSerialPrinter(min, max, count int) *serialPrinter {
 		maxNum: max,
 
 		routCount: count,
-
-		numChan: make(chan int),
-		wg:      &sync.WaitGroup{},
 	}
 }
 
-func (sp serialPrinter) printerRoutine(id int) {
+func (sp serialPrinter) printRoutine(id int) {
 	defer sp.wg.Done()
 
 	for num := range sp.numChan {
-		if num <= sp.maxNum && num%sp.routCount == id%sp.routCount {
+		if num > sp.maxNum {
+			sp.numChan <- num
+			break
+		}
+
+		if num%sp.routCount == id%sp.routCount {
 			fmt.Printf("Routine [%d] --> %02d\n", id, num)
 
 			num++
@@ -42,22 +44,18 @@ func (sp serialPrinter) printerRoutine(id int) {
 	fmt.Printf("Routine [%d] leaves.\n", id)
 }
 
-func (sp serialPrinter) start() {
+func (sp *serialPrinter) start() {
+	sp.numChan = make(chan int, 1)
+	sp.numChan <- sp.minNum
+
+	sp.wg = &sync.WaitGroup{}
 	for id := 1; id <= sp.routCount; id++ {
-		go sp.printerRoutine(id)
+		go sp.printRoutine(id)
 		sp.wg.Add(1)
 	}
-	defer sp.wg.Wait()
 
-	sp.numChan <- sp.minNum
-	for num := range sp.numChan {
-		if num > sp.maxNum {
-			close(sp.numChan)
-			break
-		}
-
-		sp.numChan <- num
-	}
+	sp.wg.Wait()
+	close(sp.numChan)
 }
 
 func SerialPrint(max, routines int) {

@@ -18,5 +18,5 @@ func generateImage(opName string) {
 func main() {
 	fmt.Println("Welcome to GoLang world!")
 
-	routine.SerialPrint(30, 3)
+	routine.ProduceConsume(2, 5, 30)
 }

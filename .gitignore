@@ -23,3 +23,5 @@ dojo/
 *.png
 
 .DS_Store
+
+vendor/
